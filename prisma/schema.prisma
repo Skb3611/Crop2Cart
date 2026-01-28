@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  name          String
+  role          String         // "buyer", "farmer", "admin"
+  approved      Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  
+  buyerProfile  BuyerProfile?
+  farmerProfile FarmerProfile?
+  orders        Order[]
+  products      Product[]
+  
+  @@index([email])
+  @@index([role])
+}
+
+model BuyerProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone     String
+  address   String
+  city      String
+  pincode   String
+  latitude  Float?
+  longitude Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FarmerProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone     String?
+  latitude  Float
+  longitude Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id          String      @id @default(uuid())
+  farmerId    String
+  farmer      User        @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  name        String
+  category    String      // "Fruit", "Vegetable", "Grain", "Rice"
+  price       Float
+  quantity    Float
+  image       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
+  
+  @@index([farmerId])
+  @@index([category])
+}
+
+model Order {
+  id            String      @id @default(uuid())
+  buyerId       String
+  buyer         User        @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  paymentMode   String      // "cod", "razorpay"
+  paymentStatus String      @default("pending") // "pending", "paid", "failed"
+  orderStatus   String      @default("new")     // "new", "packed", "delivered"
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  totalAmount   Float
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  orderItems    OrderItem[]
+  
+  @@index([buyerId])
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Float
+  price     Float
+  farmerId  String
+  createdAt DateTime @default(now())
+  
+  @@index([orderId])
+  @@index([productId])
+  @@index([farmerId])
+}
