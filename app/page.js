@@ -71,7 +71,7 @@ export default function App() {
 
   // Landing Page
   const LandingPage = () => (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+    <main className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -149,7 +149,7 @@ export default function App() {
           <p>&copy; 2025 FreshLocal. Connecting Maharashtra's farmers with local buyers.</p>
         </div>
       </footer>
-    </div>
+    </main>
   );
 
   // Login Component
