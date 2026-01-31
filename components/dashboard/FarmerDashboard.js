@@ -21,6 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Loader2, Leaf, LogOut, Plus, X } from "lucide-react";
+import { productSchema } from "@/lib/validations";
 export const FarmerDashboard = ({
   user,
   token,
@@ -28,6 +29,7 @@ export const FarmerDashboard = ({
   logout,
   loading,
 }) => {
+  const [errors, setErrors] = useState({});
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [activeTab, setActiveTab] = useState("products");
@@ -193,7 +195,7 @@ export const FarmerDashboard = ({
               </span>
             </div>
             <div className="flex items-center gap-4">
-              <div className="text-right">
+              <div className="text-right hidden sm:block">
                 <p className="font-semibold">{user?.name}</p>
                 <p className="text-xs text-gray-600">Farmer</p>
               </div>
@@ -207,7 +209,7 @@ export const FarmerDashboard = ({
 
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-6">
+          <TabsList className="mb-6 grid w-full grid-cols-2">
             <TabsTrigger value="products">My Products</TabsTrigger>
             <TabsTrigger value="orders">Orders Received</TabsTrigger>
           </TabsList>

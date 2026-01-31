@@ -15,7 +15,7 @@ export const LandingPage = ({setCurrentView}) => (
           <Leaf className="h-8 w-8 text-green-600" />
           <span className="text-xl md:text-2xl font-bold text-green-800">FreshLocal</span>
         </div>
-        <div className="hidden md:flex gap-2 ">
+        <div className="hidden md:flex gap-2">
           <Button variant="outline" onClick={() => setCurrentView("login")}>
             Login
           </Button>

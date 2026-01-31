@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Loader2, Leaf } from "lucide-react";
+import { registerSchema } from "@/lib/validations";
+
 export const RegisterView = ({
   setCurrentView,
   loading,
@@ -40,6 +42,8 @@ export const RegisterView = ({
     latitude: "",
     longitude: "",
   });
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     if (location) {
       setFormData({
@@ -53,6 +57,14 @@ export const RegisterView = ({
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setErrors({});
+
+    const result = registerSchema.safeParse(formData);
+    if (!result.success) {
+      setErrors(result.error.flatten().fieldErrors);
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch("/api/auth/register", {

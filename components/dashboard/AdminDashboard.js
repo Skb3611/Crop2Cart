@@ -180,7 +180,7 @@ export const AdminDashboard = ({ user, token, logout }) => {
               </span>
             </div>
             <div className="flex items-center gap-4">
-              <div className="text-right">
+              <div className="text-right hidden sm:block">
                 <p className="font-semibold">{user?.name}</p>
                 <p className="text-xs text-gray-600">Admin</p>
               </div>
@@ -234,8 +234,8 @@ export const AdminDashboard = ({ user, token, logout }) => {
         )}
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-6">
-            <TabsTrigger value="approvals">
+          <TabsList className="mb-6 flex flex-wrap h-auto gap-2">
+            <TabsTrigger value="approvals" className="flex-1">
               Pending Approvals
               {stats?.pendingApprovals > 0 && (
                 <Badge className="ml-2 bg-yellow-600">
@@ -243,8 +243,8 @@ export const AdminDashboard = ({ user, token, logout }) => {
                 </Badge>
               )}
             </TabsTrigger>
-            <TabsTrigger value="users">All Users</TabsTrigger>
-            <TabsTrigger value="products">All Products</TabsTrigger>
+            <TabsTrigger value="users" className="flex-1">All Users</TabsTrigger>
+            <TabsTrigger value="products" className="flex-1">All Products</TabsTrigger>
           </TabsList>
 
           <TabsContent value="approvals">
@@ -319,12 +319,12 @@ export const AdminDashboard = ({ user, token, logout }) => {
                 {allUsers.map((user) => (
                   <Card key={user.id}>
                     <CardHeader>
-                      <div className="flex justify-between items-start">
+                      <div className="flex gap-5 justify-between items-start w-full">
                         <div>
                           <CardTitle>{user.name}</CardTitle>
                           <CardDescription>{user.email}</CardDescription>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2">
                           <Badge
                             variant={
                               user.role === "admin" ? "default" : "outline"

@@ -242,7 +242,7 @@ export const BuyerDashboard = ({
                   )}
                 </Button>
               </div>
-              <div className="text-right">
+              <div className="text-right hidden sm:block">
                 <p className="font-semibold">{user?.name}</p>
                 <p className="text-xs text-gray-600">Buyer</p>
               </div>
@@ -280,7 +280,7 @@ export const BuyerDashboard = ({
         )}
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-6">
+          <TabsList className="mb-6 grid w-full grid-cols-2">
             <TabsTrigger value="products">Products</TabsTrigger>
             <TabsTrigger value="orders">My Orders</TabsTrigger>
           </TabsList>
@@ -288,7 +288,7 @@ export const BuyerDashboard = ({
           <TabsContent value="products">
             {location && (
               <>
-                <div className="mb-6 flex gap-2">
+                <div className="mb-6 flex gap-2 flex-wrap">
                   <Button
                     variant={selectedCategory === "all" ? "default" : "outline"}
                     onClick={() => setSelectedCategory("all")}
