@@ -82,6 +82,14 @@ export const FarmerDashboard = ({
   const handleSubmitProduct = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setErrors({});
+
+    const result = productSchema.safeParse(formData);
+    if (!result.success) {
+      setErrors(result.error.flatten().fieldErrors);
+      setLoading(false);
+      return;
+    }
 
     try {
       const url = editingProduct

@@ -5,12 +5,23 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Loader2,  Leaf } from 'lucide-react';
+import { loginSchema } from '@/lib/validations';
+
 export const LoginView = ({setCurrentView,loading,setLoading,setUser,setToken}) => {
     const [formData, setFormData] = useState({ email: "", password: "" });
+    const [errors, setErrors] = useState({});
 
     const handleLogin = async (e) => {
       e.preventDefault();
       setLoading(true);
+      setErrors({});
+
+      const result = loginSchema.safeParse(formData);
+      if (!result.success) {
+        setErrors(result.error.flatten().fieldErrors);
+        setLoading(false);
+        return;
+      }
 
       try {
         const response = await fetch("/api/auth/login", {
@@ -77,6 +88,9 @@ export const LoginView = ({setCurrentView,loading,setLoading,setUser,setToken}) 
                   }
                   required
                 />
+                {errors.email && (
+                  <p className="text-sm text-red-500 mt-1">{errors.email[0]}</p>
+                )}
               </div>
               <div>
                 <Label htmlFor="password">Password</Label>
@@ -89,6 +103,9 @@ export const LoginView = ({setCurrentView,loading,setLoading,setUser,setToken}) 
                   }
                   required
                 />
+                {errors.password && (
+                  <p className="text-sm text-red-500 mt-1">{errors.password[0]}</p>
+                )}
               </div>
               <Button
                 type="submit"

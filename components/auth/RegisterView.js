@@ -136,6 +136,9 @@ export const RegisterView = ({
                   }
                   required
                 />
+                {errors.name && (
+                  <p className="text-sm text-red-500 mt-1">{errors.name[0]}</p>
+                )}
               </div>
               <div>
                 <Label htmlFor="email">Email</Label>
@@ -148,6 +151,9 @@ export const RegisterView = ({
                   }
                   required
                 />
+                {errors.email && (
+                  <p className="text-sm text-red-500 mt-1">{errors.email[0]}</p>
+                )}
               </div>
             </div>
 
@@ -163,6 +169,9 @@ export const RegisterView = ({
                   }
                   required
                 />
+                {errors.password && (
+                  <p className="text-sm text-red-500 mt-1">{errors.password[0]}</p>
+                )}
               </div>
               <div>
                 <Label htmlFor="phone">Phone Number</Label>
@@ -174,6 +183,9 @@ export const RegisterView = ({
                   }
                   required
                 />
+                {errors.phone && (
+                  <p className="text-sm text-red-500 mt-1">{errors.phone[0]}</p>
+                )}
               </div>
             </div>
 
@@ -189,6 +201,9 @@ export const RegisterView = ({
                     }
                     required
                   />
+                  {errors.address && (
+                    <p className="text-sm text-red-500 mt-1">{errors.address[0]}</p>
+                  )}
                 </div>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -201,6 +216,9 @@ export const RegisterView = ({
                       }
                       required
                     />
+                    {errors.city && (
+                      <p className="text-sm text-red-500 mt-1">{errors.city[0]}</p>
+                    )}
                   </div>
                   <div>
                     <Label htmlFor="pincode">Pincode</Label>
@@ -212,6 +230,9 @@ export const RegisterView = ({
                       }
                       required
                     />
+                    {errors.pincode && (
+                      <p className="text-sm text-red-500 mt-1">{errors.pincode[0]}</p>
+                    )}
                   </div>
                 </div>
               </>
@@ -248,6 +269,9 @@ export const RegisterView = ({
                       }
                       required
                     />
+                    {errors.latitude && (
+                      <p className="text-sm text-red-500 mt-1">{errors.latitude[0]}</p>
+                    )}
                   </div>
                   <div>
                     <Label htmlFor="longitude">Longitude</Label>
@@ -265,6 +289,9 @@ export const RegisterView = ({
                       }
                       required
                     />
+                    {errors.longitude && (
+                      <p className="text-sm text-red-500 mt-1">{errors.longitude[0]}</p>
+                    )}
                   </div>
                 </div>
                 <div className="bg-green-50 p-4 rounded-md">
