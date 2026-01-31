@@ -712,6 +712,32 @@ async function handleGetAllUsers(request) {
   }
 }
 
+// Get all products (admin)
+async function handleGetAdminProducts(request) {
+  try {
+    const authUser = getAuthUser(request);
+    if (!authUser || authUser.role !== 'admin') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const products = await prisma.product.findMany({
+      include: {
+        farmer: {
+          include: {
+            farmerProfile: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return NextResponse.json(products);
+  } catch (error) {
+    console.error('Get admin products error:', error);
+    return NextResponse.json({ error: 'Failed to get products' }, { status: 500 });
+  }
+}
+
 // Delete user
 async function handleDeleteUser(request, userId) {
   try {
@@ -783,6 +809,7 @@ export async function GET(request, { params }) {
   // Admin routes
   if (path === 'admin/farmers/pending') return handleGetPendingFarmers(request);
   if (path === 'admin/users') return handleGetAllUsers(request);
+  if (path === 'admin/products') return handleGetAdminProducts(request);
   if (path === 'admin/stats') return handleGetAdminStats(request);
 
   return NextResponse.json({ error: 'Not found' }, { status: 404 });

@@ -29,6 +29,7 @@ export const AdminDashboard = ({ user, token, logout }) => {
   const [loading, setLoading] = useState(false);
   const [pendingFarmers, setPendingFarmers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [stats, setStats] = useState(null);
   const [activeTab, setActiveTab] = useState("approvals");
 
@@ -44,6 +45,9 @@ export const AdminDashboard = ({ user, token, logout }) => {
     }
     if (activeTab === "users") {
       fetchAllUsers();
+    }
+    if (activeTab === "products") {
+      fetchAllProducts();
     }
   }, [activeTab]);
 
@@ -89,6 +93,21 @@ export const AdminDashboard = ({ user, token, logout }) => {
     }
   };
 
+  const fetchAllProducts = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/admin/products", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      setAllProducts(data);
+    } catch (error) {
+      toast.error("Failed to load products");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleApproveFarmer = async (userId, approved) => {
     setLoading(true);
     try {
@@ -124,6 +143,25 @@ export const AdminDashboard = ({ user, token, logout }) => {
       fetchStats();
     } catch (error) {
       toast.error("Failed to delete user");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteProduct = async (productId) => {
+    if (!confirm("Delete this product?")) return;
+
+    setLoading(true);
+    try {
+      await fetch(`/api/products/${productId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success("Product deleted");
+      fetchAllProducts();
+      fetchStats();
+    } catch (error) {
+      toast.error("Failed to delete product");
     } finally {
       setLoading(false);
     }
@@ -206,6 +244,7 @@ export const AdminDashboard = ({ user, token, logout }) => {
               )}
             </TabsTrigger>
             <TabsTrigger value="users">All Users</TabsTrigger>
+            <TabsTrigger value="products">All Products</TabsTrigger>
           </TabsList>
 
           <TabsContent value="approvals">
@@ -321,6 +360,67 @@ export const AdminDashboard = ({ user, token, logout }) => {
                         </Button>
                       </CardFooter>
                     )}
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="products">
+            {loading ? (
+              <div className="flex justify-center py-20">
+                <Loader2 className="h-8 w-8 animate-spin text-green-600" />
+              </div>
+            ) : allProducts.length === 0 ? (
+              <Card className="py-20 text-center">
+                <p className="text-gray-600">No products found</p>
+              </Card>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {allProducts.map((product) => (
+                  <Card key={product.id}>
+                    {product.image && (
+                      <div className="h-48 w-full relative">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-cover rounded-t-lg"
+                        />
+                      </div>
+                    )}
+                    <CardHeader>
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <CardTitle>{product.name}</CardTitle>
+                          <CardDescription>{product.category}</CardDescription>
+                        </div>
+                        <Badge variant="secondary">
+                          Qty: {product.quantity}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-2xl font-bold text-green-600">
+                        ₹{product.price}
+                      </p>
+                      <div className="mt-2 text-sm text-gray-500">
+                        <p>Farmer: {product.farmer?.name}</p>
+                        <p>
+                          Location: {product.farmer?.farmerProfile?.latitude},{" "}
+                          {product.farmer?.farmerProfile?.longitude}
+                        </p>
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button
+                        onClick={() => handleDeleteProduct(product.id)}
+                        variant="destructive"
+                        className="w-full"
+                      >
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Delete Product
+                      </Button>
+                    </CardFooter>
                   </Card>
                 ))}
               </div>
