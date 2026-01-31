@@ -1,290 +1,189 @@
-# FreshLocal - Local Farmer Marketplace MVP
+# FreshLocal - Local Farmer Marketplace (Student Project)
 
-A full-stack marketplace platform connecting farmers in Maharashtra with local buyers within a 10 km radius using GPS-based distance filtering.
+Welcome to **FreshLocal**! 🌾🛒
 
-## 🚀 Tech Stack
+This project is a full-stack web application designed to connect local farmers directly with buyers in their area. Think of it as a "local Amazon" for fresh produce, helping farmers get better prices and buyers get fresher food.
 
-- **Framework**: Next.js 14 (App Router)
-- **Styling**: Tailwind CSS
-- **UI Components**: shadcn/ui
-- **Database**: PostgreSQL
-- **ORM**: Prisma
-- **Authentication**: JWT + bcrypt
-- **Payments**: Razorpay (Test Mode) + Cash on Delivery
-- **Location**: Browser Geolocation API
-
-## ✨ Features
-
-### For Buyers
-- 🗺️ GPS-based product discovery (10 km radius)
-- 🛒 Shopping cart functionality
-- 💳 Dual payment options (COD + Razorpay)
-- 📦 Order tracking
-- 🔍 Category filtering (Fruit, Vegetable, Grain, Rice)
-- 📍 Maharashtra location restriction
-
-### For Farmers
-- 🌾 Product management (Add/Edit/Delete)
-- 📍 Manual GPS coordinate input
-- 📊 Order management
-- ✅ Admin approval workflow
-- 📦 Order status updates (New/Packed)
-
-### For Admins
-- 👨‍🌾 Farmer approval system
-- 📊 Dashboard with statistics
-- 👥 User management
-- 🗑️ Content moderation
-
-## 🔐 Demo Credentials
-
-### Admin
-- Email: `admin@freshlocal.com`
-- Password: `admin123`
-
-### Farmer
-- Email: `farmer1@example.com`
-- Password: `farmer123`
-- Location: Mumbai (19.0760, 72.8777)
-
-### Buyer
-- Email: `buyer@example.com`
-- Password: `buyer123`
-- Location: Mumbai (19.1136, 72.8697)
-
-## 📦 Installation & Setup
-
-### Prerequisites
-- Node.js 18+ 
-- PostgreSQL 15+
-- Yarn package manager
-
-### Environment Variables
-
-The `.env` file is already configured with:
-
-```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/farmer_marketplace?schema=public"
-JWT_SECRET=your-super-secret-jwt-key-change-in-production
-RAZORPAY_KEY_ID=rzp_test_S7q3CO3nDQNDu4
-RAZORPAY_KEY_SECRET=5jMPeQpMt0V25E5vIHDnS6Ds
-NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_S7q3CO3nDQNDu4
-```
-
-### Database Setup
-
-```bash
-# PostgreSQL is already running
-# Database and tables are already created
-# Seed data is already loaded
-```
-
-### Running the Application
-
-```bash
-# Install dependencies (already done)
-yarn install
-
-# Start development server
-yarn dev
-```
-
-The application will be available at:
-- Frontend: http://localhost:3000
-- API: http://localhost:3000/api
-
-## 📚 API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user
-
-### Products
-- `GET /api/products?latitude={lat}&longitude={lon}&category={category}` - Get products (filtered by location)
-- `GET /api/products/my` - Get farmer's products
-- `POST /api/products` - Create product (farmer only)
-- `PUT /api/products/{id}` - Update product
-- `DELETE /api/products/{id}` - Delete product
-
-### Orders
-- `POST /api/orders` - Create order
-- `POST /api/orders/verify-payment` - Verify Razorpay payment
-- `GET /api/orders/buyer` - Get buyer orders
-- `GET /api/orders/farmer` - Get farmer orders
-- `PUT /api/orders/{id}` - Update order status
-
-### Admin
-- `GET /api/admin/farmers/pending` - Get pending farmer approvals
-- `PUT /api/admin/farmers/{id}` - Approve/reject farmer
-- `GET /api/admin/users` - Get all users
-- `DELETE /api/admin/users/{id}` - Delete user
-- `GET /api/admin/stats` - Get platform statistics
-
-## 🧪 Testing
-
-### Buyer Flow
-1. Login as buyer: `buyer@example.com / buyer123`
-2. Allow location access (GPS)
-3. Browse products within 10 km
-4. Add items to cart
-5. Checkout with COD or Razorpay
-6. View order history
-
-### Farmer Flow
-1. Login as farmer: `farmer1@example.com / farmer123`
-2. View your products
-3. Add new products
-4. View received orders
-5. Update order status to "Packed"
-
-### Admin Flow
-1. Login as admin: `admin@freshlocal.com / admin123`
-2. View dashboard statistics
-3. Approve/reject pending farmers
-4. Manage users
-
-## 🗺️ GPS Distance Calculation
-
-The platform uses the **Haversine formula** to calculate distances between GPS coordinates:
-
-```javascript
-// Located in: /app/lib/gps.js
-function calculateDistance(lat1, lon1, lat2, lon2) {
-  // Returns distance in kilometers
-}
-```
-
-### Maharashtra Boundaries
-- Latitude: 15.6° to 22.0° N
-- Longitude: 72.6° to 80.9° E
-
-## 💳 Payment Integration
-
-### Razorpay Test Mode
-- Test cards work in test mode
-- No actual charges
-- Payment verification with signature validation
-
-### Cash on Delivery
-- Always available
-- Order marked as "paid" immediately
-
-## 🎨 Design System
-
-### Colors
-- Primary: Green (#16a34a)
-- Background: White & Gray-50
-- Text: Gray-900, Gray-600
-
-### Components
-- All components from shadcn/ui
-- Mobile-first responsive design
-- Clean, professional aesthetic
-
-## 📁 Project Structure
-
-```
-/app
-├── app/
-│   ├── api/[[...path]]/route.js  # Backend API routes
-│   ├── page.js                    # Frontend UI
-│   ├── layout.js                  # Root layout
-│   └── globals.css                # Global styles
-├── lib/
-│   ├── prisma.js                  # Prisma client
-│   ├── auth.js                    # Authentication helpers
-│   └── gps.js                     # GPS utilities
-├── prisma/
-│   ├── schema.prisma              # Database schema
-│   └── seed.js                    # Seed data
-├── components/ui/                 # shadcn components
-└── .env                           # Environment variables
-```
-
-## 🔒 Security Features
-
-- Password hashing with bcrypt
-- JWT token authentication
-- Role-based access control
-- Admin approval for farmers
-- Payment signature verification
-- Maharashtra location restriction
-
-## 📊 Database Schema
-
-### User
-- Basic auth fields
-- Role (buyer/farmer/admin)
-- Approval status
-
-### BuyerProfile
-- Address details
-- GPS coordinates (optional)
-
-### FarmerProfile
-- GPS coordinates (required)
-- Phone number
-
-### Product
-- Name, category, price
-- Quantity, image
-- Farmer relation
-
-### Order & OrderItem
-- Payment details
-- Order status
-- Item-level tracking
-
-## 🚧 Known Limitations (MVP Scope)
-
-- No chat functionality
-- No delivery tracking
-- No reviews/ratings
-- No multilingual support
-- Test mode payments only
-- No email notifications
-
-## 🔄 Future Enhancements
-
-- Real-time order tracking
-- In-app chat
-- Product reviews
-- Multiple language support
-- SMS notifications
-- Advanced analytics
-- Image upload for products
-- Delivery partner integration
-
-## 📝 Notes
-
-- Razorpay script loads from CDN
-- Location access required for buyers
-- Farmers need admin approval
-- 10 km radius is fixed
-- Maharashtra restriction enforced
-
-## 🐛 Troubleshooting
-
-### Location Not Working
-- Ensure HTTPS or localhost
-- Allow browser location access
-- Check Maharashtra boundaries
-
-### Payment Failed
-- Verify Razorpay credentials
-- Check signature validation
-- Use Razorpay test cards
-
-### Products Not Showing
-- Verify buyer GPS location
-- Check 10 km radius
-- Ensure farmer is approved
-
-## 📄 License
-
-This is an MVP project for demonstration purposes.
+It is built using modern web technologies and is a great example of how to build a real-world application with **Next.js**, **PostgreSQL**, and **Tailwind CSS**.
 
 ---
 
-Built with ❤️ for Maharashtra's farmers
+## 📖 What is this Project?
+
+FreshLocal solves a simple problem: Farmers often struggle to reach local customers, and customers often can't find fresh, local produce easily.
+
+**Key Concepts:**
+*   **Hyper-local**: Uses GPS to only show products within a 10km radius.
+*   **Role-based Access**: Different dashboards for **Farmers**, **Buyers**, and **Admins**.
+*   **Real-time Logic**: Inventory management and order status tracking.
+
+---
+
+## 📂 Project Structure Explained
+
+Understanding the folder structure is key to navigating the code. Here is a breakdown of the most important directories:
+
+```text
+Crop2Cart/
+├── app/                  # 🚀 Main Application Logic (Next.js App Router)
+│   ├── api/              # Backend API routes (handling database requests)
+│   ├── components/       # Page-specific components
+│   ├── globals.css       # Global styles
+│   ├── layout.js         # Main layout wrapper (navbar, footer, etc.)
+│   └── page.js           # The homepage
+│
+├── components/           # 🧩 Reusable UI Components
+│   ├── auth/             # Login and Register forms
+│   ├── dashboard/        # Dashboards for Admin, Buyer, and Farmer
+│   ├── home/             # Landing page components
+│   └── ui/               # Shadcn UI library components (Buttons, Inputs, etc.)
+│
+├── lib/                  # 🛠️ Helper Functions & Utilities
+│   ├── auth.js           # Authentication logic (handling passwords/sessions)
+│   ├── gps.js            # GPS distance calculation logic
+│   ├── prisma.js         # Database connection client
+│   └── utils.js          # General utility functions
+│
+├── prisma/               # 🗄️ Database Configuration
+│   ├── schema.prisma     # Defines the database tables and relationships
+│   └── seed.js           # Script to populate the DB with dummy data
+│
+└── public/               # 🖼️ Static Assets (images, icons)
+```
+
+---
+
+## ✨ Key Features
+
+### 🛒 For Buyers
+*   **Find Nearby Food**: Automatically finds farmers within 10km of your location.
+*   **Easy Shopping**: Add items to cart and checkout.
+*   **Flexible Payments**: Pay via Cash on Delivery or Online (Simulated).
+
+### 👨‍🌾 For Farmers
+*   **Manage Products**: Add, edit, or remove your crops.
+*   **Order Management**: See new orders and mark them as packed/delivered.
+*   **Location Tagging**: Set your farm's exact GPS location.
+
+### 🛡️ For Admins
+*   **Verification**: Approve new farmers to ensure safety.
+*   **Oversight**: View platform statistics and manage users.
+
+---
+
+## �️ Dashboard Features
+
+### 👨‍🌾 Farmer Dashboard
+Designed for farmers to manage their inventory and sales.
+*   **Products Tab**:
+    *   View all your listed crops.
+    *   **Add Product**: Upload new items with details like Name, Category (Fruit, Vegetable, Grain), Price, and Quantity.
+    *   **Edit/Delete**: Update prices or remove out-of-stock items.
+*   **Orders Tab**:
+    *   View incoming orders from buyers.
+    *   **Status Updates**: Mark orders as "Packed" or "Delivered".
+
+### 🛒 Buyer Dashboard
+The shopping interface for customers.
+*   **Products Tab**:
+    *   **GPS Filtering**: Automatically shows products from farmers within 10km.
+    *   **Categories**: Filter by Vegetables, Fruits, Grains, etc.
+    *   **Cart**: Add items and proceed to checkout.
+*   **Orders Tab**:
+    *   Track the status of your purchases (Pending, Packed, Delivered).
+
+### 👮 Admin Dashboard
+The control center for platform administrators.
+*   **Approvals Tab**: Review and verify new farmer registrations (safety check).
+*   **Users Tab**: View a list of all registered Buyers and Farmers.
+*   **Stats Overview**: See total users, total orders, and platform activity.
+
+---
+
+## 🔌 API Reference
+
+The backend provides a RESTful API powered by Next.js Route Handlers.
+
+### 🔐 Authentication
+*   `POST /api/auth/register`: Create a new account (Farmer/Buyer).
+*   `POST /api/auth/login`: Sign in and receive a JWT token.
+*   `GET /api/auth/me`: Get current user details.
+
+### 📦 Products
+*   `GET /api/products`: Fetch products.
+    *   *Query Params*: `latitude`, `longitude` (for location filtering), `category`.
+*   `POST /api/products`: Create a new product listing (Farmers only).
+*   `PUT /api/products/:id`: Update an existing product.
+*   `DELETE /api/products/:id`: Remove a product.
+*   `GET /api/products/my`: Get all products listed by the logged-in farmer.
+
+### 🛍️ Orders
+*   `POST /api/orders`: Place a new order (Buyers only).
+*   `GET /api/orders/buyer`: Get purchase history for the logged-in buyer.
+*   `GET /api/orders/farmer`: Get incoming sales for the logged-in farmer.
+
+### ⚙️ Admin
+*   `GET /api/admin/stats`: Fetch platform-wide statistics.
+*   `GET /api/admin/farmers/pending`: List farmers waiting for approval.
+*   `GET /api/admin/users`: List all users on the platform.
+
+---
+
+## �🛠️ Tech Stack (And Why We Used It)
+
+*   **Next.js 14**: A powerful React framework that handles both the Frontend (UI) and Backend (API) in one place.
+*   **Tailwind CSS**: For styling the app quickly without writing raw CSS files.
+*   **Shadcn/UI**: A library of beautiful, pre-made components to make the app look professional.
+*   **Prisma & PostgreSQL**: Prisma makes interacting with the database easy using simple commands instead of complex SQL queries.
+*   **JWT (JSON Web Tokens)**: Securely handles user login and sessions.
+
+---
+
+## 🔐 Demo Credentials
+
+Use these accounts to test the different roles in the application:
+
+| Role | Email | Password | Location Context |
+|------|-------|----------|------------------|
+| **Admin** | `admin@freshlocal.com` | `admin123` | Can approve farmers |
+| **Farmer** | `farmer1@example.com` | `farmer123` | Mumbai (19.0760, 72.8777) |
+| **Buyer** | `buyer@example.com` | `buyer123` | Mumbai (19.1136, 72.8697) |
+
+---
+
+## 📦 Installation & Setup Guide
+
+If you want to run this project on your local machine, follow these steps.
+
+### Prerequisites
+*   **Node.js 18+** installed.
+*   **PostgreSQL** installed and running.
+
+### Step 1: Install Dependencies
+Open your terminal in the project folder and run:
+```bash
+yarn install
+```
+
+### Step 2: Database Setup
+The project is configured to use a local PostgreSQL database. The connection string is in the `.env` file.
+```bash
+# This sets up the database tables
+npx prisma migrate dev
+
+# This fills the database with sample data (Admin, Farmers, Products)
+npx prisma db seed
+```
+
+### Step 3: Run the Server
+Start the development server:
+```bash
+yarn dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the app!
+
+### 📚 API Endpoints
+The backend API is available at `http://localhost:3000/api`.
+*   `POST /api/auth/register` - Register new user
+*   `POST /api/auth/login` - Login user
