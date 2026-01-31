@@ -87,7 +87,7 @@ async function handleRegister(request) {
         role: user.role,
         approved: user.approved,
       },
-    });
+    },{status:201});
   } catch (error) {
     console.error('Register error:', error);
     return NextResponse.json({ error: 'Registration failed' }, { status: 500 });
@@ -405,6 +405,7 @@ async function handleCreateOrder(request) {
 
     const body = await request.json();
     const { items, paymentMode } = body;
+    console.log(items,paymentMode);
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json({ error: 'No items in order' }, { status: 400 });
@@ -452,13 +453,13 @@ async function handleCreateOrder(request) {
       });
       razorpayOrderId = razorpayOrder.id;
     }
-
+    console.log(paymentMode==="cod");
     // Create order
     const order = await prisma.order.create({
       data: {
         buyerId: authUser.userId,
         paymentMode,
-        paymentStatus: paymentMode === 'cod' ? 'paid' : 'pending',
+        paymentStatus: paymentMode === 'cod' ? 'pending' : 'paid',
         orderStatus: 'new',
         totalAmount,
         razorpayOrderId,

@@ -4,6 +4,11 @@ const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.$transaction([
+    prisma.order.deleteMany(),
+    prisma.product.deleteMany(),
+    prisma.user.deleteMany(),
+  ]);
   console.log('Seeding database...');
 
   // Create admin user
