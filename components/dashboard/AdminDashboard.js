@@ -25,6 +25,8 @@ import {
   LogOut,
   X,
 } from "lucide-react";
+import { Footer } from "@/components/layout/Footer";
+
 export const AdminDashboard = ({ user, token, logout }) => {
   const [loading, setLoading] = useState(false);
   const [pendingFarmers, setPendingFarmers] = useState([]);
@@ -192,7 +194,7 @@ export const AdminDashboard = ({ user, token, logout }) => {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-12">
         {/* Stats */}
         {stats && (
           <div className="grid md:grid-cols-5 gap-4 mb-8">
@@ -428,6 +430,7 @@ export const AdminDashboard = ({ user, token, logout }) => {
           </TabsContent>
         </Tabs>
       </div>
+      <Footer />
     </div>
   );
 };

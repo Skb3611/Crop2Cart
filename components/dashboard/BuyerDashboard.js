@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import {
   Loader2,
@@ -23,6 +24,8 @@ import {
   X,
   Leaf,
 } from "lucide-react";
+import { Footer } from "@/components/layout/Footer";
+
 export const BuyerDashboard = ({
   user,
   logout,
@@ -216,7 +219,7 @@ export const BuyerDashboard = ({
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <section className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4">
@@ -254,7 +257,7 @@ export const BuyerDashboard = ({
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-20">
         {!location && (
           <Card className="mb-6 bg-yellow-50 border-yellow-200">
             <CardContent className="pt-6">
@@ -309,8 +312,26 @@ export const BuyerDashboard = ({
                 </div>
 
                 {loading ? (
-                  <div className="flex justify-center py-20">
-                    <Loader2 className="h-8 w-8 animate-spin text-green-600" />
+                  <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                      <Card key={i}>
+                        <CardHeader>
+                          <Skeleton className="w-full h-48 rounded-md mb-2" />
+                          <Skeleton className="h-6 w-3/4 mb-2" />
+                          <Skeleton className="h-4 w-1/4" />
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-2">
+                            <Skeleton className="h-8 w-1/2" />
+                            <Skeleton className="h-4 w-1/3" />
+                            <Skeleton className="h-3 w-1/2" />
+                          </div>
+                        </CardContent>
+                        <CardFooter>
+                          <Skeleton className="h-10 w-full" />
+                        </CardFooter>
+                      </Card>
+                    ))}
                   </div>
                 ) : products.length === 0 ? (
                   <Card className="py-20 text-center">
@@ -320,7 +341,7 @@ export const BuyerDashboard = ({
                   </Card>
                 ) : (
                   <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {products.map((product) => (
+                    {products &&products?.map((product) => (
                       <Card key={product.id}>
                         <CardHeader>
                           {product.image && (
@@ -370,8 +391,33 @@ export const BuyerDashboard = ({
 
           <TabsContent value="orders">
             {loading ? (
-              <div className="flex justify-center py-20">
-                <Loader2 className="h-8 w-8 animate-spin text-green-600" />
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <Card key={i}>
+                    <CardHeader>
+                      <div className="flex justify-between items-start">
+                        <div className="space-y-2">
+                          <Skeleton className="h-6 w-32" />
+                          <Skeleton className="h-4 w-24" />
+                        </div>
+                        <div className="flex gap-2">
+                          <Skeleton className="h-6 w-16" />
+                          <Skeleton className="h-6 w-16" />
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2">
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-full" />
+                        <div className="border-t pt-2 flex justify-between">
+                          <Skeleton className="h-5 w-16" />
+                          <Skeleton className="h-5 w-16" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             ) : orders.length === 0 ? (
               <Card className="py-20 text-center">
@@ -549,6 +595,7 @@ export const BuyerDashboard = ({
           </Card>
         </div>
       )}
-    </div>
+      <Footer />
+    </section>
   );
 };

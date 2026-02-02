@@ -22,6 +22,8 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Loader2, Leaf, LogOut, Plus, X } from "lucide-react";
 import { productSchema } from "@/lib/validations";
+import { Footer } from "@/components/layout/Footer";
+
 export const FarmerDashboard = ({
   user,
   token,
@@ -207,7 +209,7 @@ export const FarmerDashboard = ({
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-20">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-6 grid w-full grid-cols-2">
             <TabsTrigger value="products">My Products</TabsTrigger>
@@ -484,6 +486,7 @@ export const FarmerDashboard = ({
           </Card>
         </div>
       )}
+      <Footer />
     </div>
   );
 };

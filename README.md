@@ -151,7 +151,7 @@ Use these accounts to test the different roles in the application:
 
 ---
 
-## 📦 Installation & Setup Guide
+## �📦 Installation & Setup Guide
 
 If you want to run this project on your local machine, follow these steps.
 
